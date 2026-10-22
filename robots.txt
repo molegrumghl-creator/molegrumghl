@@ -1,0 +1,7 @@
+# Molegru'm GHL — robots.txt
+# Hosted at https://molegrumghl.vercel.app/robots.txt
+
+User-agent: *
+Allow: /
+
+Sitemap: https://molegrumghl.vercel.app/sitemap.xml
