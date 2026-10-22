@@ -103,31 +103,50 @@
     }
   }
 
-  /* ------------------------------------------------------------------------
-     3. EMAIL SIGNUP GUARD
+   /* ------------------------------------------------------------------------
+     3. EMAIL SIGNUP HANDLER
      ------------------------------------------------------------------------ */
   function initSignupGuard() {
     var forms = document.querySelectorAll("form[data-signup]");
 
     for (var i = 0; i < forms.length; i++) {
       (function (form) {
-        var action = form.getAttribute("action") || "";
-
-        // The placeholder action starts with "#REPLACE". Once you paste your
-        // real MailerLite form action URL into the HTML, this guard stops
-        // firing and the form posts normally.
-        if (action.indexOf("#REPLACE") !== 0) return;
-
         form.addEventListener("submit", function (event) {
-          event.preventDefault();
-
+          event.preventDefault(); // Stop the page from reloading/redirecting
+          
+          var action = form.getAttribute("action") || "";
           var note = form.querySelector("[data-signup-status]");
-          if (!note) return;
+          
+          if (action.indexOf("#REPLACE") === 0) {
+            if (note) {
+              note.textContent = "The email signup isn't connected yet. Please check back shortly — or write to molegrumghl@gmail.com.";
+              note.classList.add("is-visible");
+            }
+            return;
+          }
+          
+          // Real submission to MailerLite
+          if (note) note.textContent = "Joining...";
+          
+          var data = new URLSearchParams();
+          var formData = new FormData(form);
+          formData.forEach(function(value, key){
+              data.append(key, value);
+          });
 
-          note.textContent =
-            "The email signup isn't connected yet. Please check back shortly — " +
-            "or write to molegrumghl@gmail.com and you'll be added by hand.";
-          note.classList.add("is-visible");
+          fetch(action, {
+            method: "POST",
+            body: data,
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            mode: "no-cors"
+          }).then(function () {
+            if (note) note.textContent = "Thanks — you're on the list. One email when it opens.";
+            form.reset();
+          }).catch(function () {
+            if (note) note.textContent = "Something went wrong. Please try again or email molegrumghl@gmail.com.";
+          });
         });
       })(forms[i]);
     }
