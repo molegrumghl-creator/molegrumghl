@@ -186,44 +186,34 @@
       </div>
     </section>
 
-    <section class="section">
+        <!-- Signup -->
+    <section class="section section--alt">
       <div class="wrap wrap--narrow">
         <div class="signup">
-          <p class="eyebrow">Stay in touch</p>
-          <h2>Get one email when the next thing is ready.</h2>
-          <p>If you'd like to hear about new guides and the launch of The 14-Day Bloating Trigger Finder, add your email below.</p>
+          <p class="eyebrow">The 14-day plan</p>
+          <h2>Waitlist for The 14-Day Bloating Trigger Finder.</h2>
+          <p>One email when it opens. Nothing else before then.</p>
 
-          <!-- REPLACE with MailerLite form action -->
-<form data-signup action="https://assets.mailerlite.com/jsonp/2733832/forms/202044902435980882/subscribe" method="post" novalidate>            
-  <div class="form-row">
-    <label class="visually-hidden" for="signup-email-trigger">Your email address</label>
-    
-    <!-- Changed name="email" to name="fields[email]" -->
-    <input class="input" id="signup-email-trigger" type="email" name="fields[email]"
-           placeholder="you@example.com" required autocomplete="email">
-           
-    <!-- Added these two hidden inputs -->
-    <input type="hidden" name="ml-submit" value="1">
-    <input type="hidden" name="anticsrf" value="true">
-    
-    <button class="btn btn--light" type="submit">Join the waitlist</button>
-  </div>
-  <p data-signup-status class="form-note" role="status" aria-live="polite"></p>
-  <p class="form-note">By joining you agree to the <a href="/privacy">privacy policy</a>. Unsubscribe any time. This is not medical advice.</p>
-</form>
-
-    <section class="section section--tight">
-      <div class="wrap wrap--read">
-        <h2>Also by Ronald Aduda</h2>
-        <p>
-          <a class="link-arrow" href="https://amzn.to/3QoKBN3" target="_blank" rel="noopener">The Daily Growth Blueprint</a>
-          — available on Amazon.
-        </p>
-      </div>
-    </section>
-
+          <form data-signup action="https://assets.mailerlite.com/jsonp/2733832/forms/202044902435980882/subscribe" method="post" novalidate>            
+            <div class="form-row">
+              <label class="visually-hidden" for="signup-email-post">Your email address</label>
+              
+              <input class="input" id="signup-email-post" type="email" name="fields[email]"
+                     placeholder="you@example.com" required autocomplete="email">
+                     
+              <input type="hidden" name="ml-submit" value="1">
+              <input type="hidden" name="anticsrf" value="true">
+              
+              <button class="btn btn--light" type="submit">Join the waitlist</button>
+            </div>
+            <p data-signup-status class="form-note" role="status" aria-live="polite"></p>
+            <p class="form-note">By joining you agree to the <a href="/privacy">privacy policy</a>. Unsubscribe any time. This is not medical advice.</p>
+          </form>
+          
+        </div> <!-- THIS WAS MISSING -->
+      </div> <!-- THIS WAS MISSING -->
+    </section> <!-- THIS WAS MISSING -->
   </main>
-
   <footer class="site-footer">
     <div class="wrap">
       <div class="footer-grid">
