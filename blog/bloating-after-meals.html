@@ -284,18 +284,23 @@
           <p>One email when it opens. Nothing else before then.</p>
 
           <!-- REPLACE with MailerLite form action -->
-<form data-signup action="https://assets.mailerlite.com/jsonp/2733832/forms/202044902435980882/subscribe" method="post" novalidate>            <div class="form-row">
-              <label class="visually-hidden" for="signup-email-post">Your email address</label>
-              <input class="input" id="signup-email-post" type="email" name="email"
-                     placeholder="you@example.com" required autocomplete="email">
-              <button class="btn btn--light" type="submit">Join the waitlist</button>
-            </div>
-            <p data-signup-status class="form-note" role="status" aria-live="polite"></p>
-            <p class="form-note">By joining you agree to the <a href="/privacy">privacy policy</a>. Unsubscribe any time.</p>
-          </form>
-        </div>
-      </div>
-    </section>
+<form data-signup action="https://assets.mailerlite.com/jsonp/2733832/forms/202044902435980882/subscribe" method="post" novalidate>            
+  <div class="form-row">
+    <label class="visually-hidden" for="signup-email-trigger">Your email address</label>
+    
+    <!-- Changed name="email" to name="fields[email]" -->
+    <input class="input" id="signup-email-trigger" type="email" name="fields[email]"
+           placeholder="you@example.com" required autocomplete="email">
+           
+    <!-- Added these two hidden inputs -->
+    <input type="hidden" name="ml-submit" value="1">
+    <input type="hidden" name="anticsrf" value="true">
+    
+    <button class="btn btn--light" type="submit">Join the waitlist</button>
+  </div>
+  <p data-signup-status class="form-note" role="status" aria-live="polite"></p>
+  <p class="form-note">By joining you agree to the <a href="/privacy">privacy policy</a>. Unsubscribe any time. This is not medical advice.</p>
+</form>
 
   </main>
 
