@@ -21,31 +21,19 @@
 (function () {
   "use strict";
 
-  /* ------------------------------------------------------------------------
-     1. MOBILE NAVIGATION
-     ------------------------------------------------------------------------ */
   function initNav() {
     var toggle = document.querySelector(".nav-toggle");
     var nav = document.getElementById("site-nav");
-
     if (!toggle || !nav) return;
 
     function setOpen(open) {
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
       nav.classList.toggle("is-open", open);
-      // Keep the label accurate for screen readers
-      toggle.setAttribute(
-        "aria-label",
-        open ? "Close menu" : "Open menu"
-      );
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     }
 
     function isOpen() {
       return toggle.getAttribute("aria-expanded") === "true";
-    }
-
-    function close() {
-      if (isOpen()) setOpen(false);
     }
 
     toggle.addEventListener("click", function (event) {
@@ -53,66 +41,60 @@
       setOpen(!isOpen());
     });
 
-    // Close when a navigation link is chosen (in-page anchors, new page, etc.)
     nav.addEventListener("click", function (event) {
-      var target = event.target;
-      if (target && target.closest && target.closest("a")) {
-        close();
+      if (event.target && event.target.closest && event.target.closest("a")) {
+        setOpen(false);
       }
     });
 
-    // Close on Escape, and return focus to the toggle
     document.addEventListener("keydown", function (event) {
       if (event.key === "Escape" && isOpen()) {
-        close();
+        setOpen(false);
         toggle.focus();
       }
     });
 
-    // Close when clicking outside the header (only matters on mobile)
     document.addEventListener("click", function (event) {
       if (!isOpen()) return;
       var header = toggle.closest(".site-header");
       if (header && !header.contains(event.target)) {
-        close();
+        setOpen(false);
       }
     });
 
-    // Reset state when the viewport grows to desktop width
     var wide = window.matchMedia("(min-width: 860px)");
-    function handleWide(event) {
-      if (event.matches) close();
-    }
     if (typeof wide.addEventListener === "function") {
-      wide.addEventListener("change", handleWide);
-    } else if (typeof wide.addListener === "function") {
-      wide.addListener(handleWide); // older Safari fallback
+      wide.addEventListener("change", function (event) {
+        if (event.matches) setOpen(false);
+      });
     }
   }
 
-  /* ------------------------------------------------------------------------
-     2. FOOTER YEAR
-     ------------------------------------------------------------------------ */
   function initYear() {
     var nodes = document.querySelectorAll("[data-year]");
     if (!nodes.length) return;
-
     var year = String(new Date().getFullYear());
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].textContent = year;
     }
   }
 
-   /* ------------------------------------------------------------------------
-     3. EMAIL SIGNUP HANDLER
-     ------------------------------------------------------------------------ */
+  function initReadingTime() {
+    var body = document.querySelector("[data-article-body]");
+    var output = document.querySelector("[data-reading-time]");
+    if (!body || !output) return;
+    var text = body.textContent || "";
+    var words = text.trim().split(/\s+/).length;
+    var minutes = Math.max(1, Math.ceil(words / 200));
+    output.textContent = minutes + " min read";
+  }
+
   function initSignupGuard() {
     var forms = document.querySelectorAll("form[data-signup]");
-
     for (var i = 0; i < forms.length; i++) {
       (function (form) {
         form.addEventListener("submit", function (event) {
-          event.preventDefault(); // Stop the page from reloading/redirecting
+          event.preventDefault(); // Stops the page redirect!
           
           var action = form.getAttribute("action") || "";
           var note = form.querySelector("[data-signup-status]");
@@ -125,7 +107,6 @@
             return;
           }
           
-          // Real submission to MailerLite
           if (note) note.textContent = "Joining...";
           
           var data = new URLSearchParams();
@@ -137,9 +118,7 @@
           fetch(action, {
             method: "POST",
             body: data,
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
             mode: "no-cors"
           }).then(function () {
             if (note) note.textContent = "Thanks — you're on the list. One email when it opens.";
@@ -152,31 +131,11 @@
     }
   }
 
-  /* ------------------------------------------------------------------------
-     4. READING TIME (progressive enhancement)
-     ------------------------------------------------------------------------ */
-  function initReadingTime() {
-    var body = document.querySelector("[data-article-body]");
-    var output = document.querySelector("[data-reading-time]");
-
-    if (!body || !output) return;
-
-    var text = body.textContent || "";
-    var words = text.trim().split(/\s+/).length;
-
-    // 200 words per minute, never less than one minute
-    var minutes = Math.max(1, Math.ceil(words / 200));
-    output.textContent = minutes + " min read";
-  }
-
-  /* ------------------------------------------------------------------------
-     BOOT
-     ------------------------------------------------------------------------ */
   function init() {
     initNav();
     initYear();
-    initSignupGuard();
     initReadingTime();
+    initSignupGuard();
   }
 
   if (document.readyState === "loading") {
