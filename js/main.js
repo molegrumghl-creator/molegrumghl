@@ -121,7 +121,7 @@
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             mode: "no-cors"
           }).then(function () {
-            if (note) note.textContent = "Thanks — you're on the list. One email when it opens.";
+            if (note) note.textContent = "Almost done — check your inbox (and your spam folder) for an email from me and click the confirm button to finish joining.";
             form.reset();
           }).catch(function () {
             if (note) note.textContent = "Something went wrong. Please try again or email molegrumghl@gmail.com.";
